@@ -17,20 +17,25 @@ permissions:
   contents: read
   id-token: write
 
-env:
-  AWS_REGION: ${{ vars.AWS_REGION }}
-  S3_BUCKET: ${{ vars.FRONTEND_S3_BUCKET }}
-  CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
-  VITE_API_URL: ${{ vars.VITE_API_URL }}
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment: test
+    env:
+      AWS_REGION: ${{ vars.AWS_REGION }}
+      S3_BUCKET: ${{ vars.FRONTEND_S3_BUCKET }}
+      CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}
+      VITE_API_URL: ${{ vars.VITE_API_URL }}
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v7
+
+      - name: Validate deployment variables
+        run: |
+          test -n "${S3_BUCKET}" || { echo "FRONTEND_S3_BUCKET is empty for environment 'test'"; exit 1; }
+          test -n "${AWS_REGION}" || { echo "AWS_REGION is empty for environment 'test'"; exit 1; }
+          test -n "${VITE_API_URL}" || { echo "VITE_API_URL is empty for environment 'test'"; exit 1; }
 
       - name: Set up Bun
         uses: oven-sh/setup-bun@v2
