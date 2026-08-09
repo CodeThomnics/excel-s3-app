@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@theme {
+  --color-app-900: #021e3a;
+  --color-app-800: #033664;
+  --color-app-700: #0a4a82;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+@layer base {
+  html, body {
+    font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #1a2332;
+    color: #e8f0f8;
+    min-width: 320px;
+    min-height: 100vh;
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  button, input, select, textarea {
+    font: inherit;
+  }
+}
+
+@layer utilities {
+  .app-text-muted { color: #8fafc8; }
+}
