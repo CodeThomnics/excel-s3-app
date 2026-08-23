@@ -1,12 +1,18 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import "./App.css";
   import { listFiles, type FileInfo } from "./api";
   import FileList from "./components/FileList.svelte";
   import FileUpload from "./components/FileUpload.svelte";
 
-  let files: FileInfo[] = [];
-  let loading = true;
+  let files: FileInfo[] = $state([]);
+  let loading = $state(true);
+  let dark = $state(document.documentElement.classList.contains("dark"));
+
+  function toggleDark(): void {
+    dark = !dark;
+    document.documentElement.classList.toggle("dark", dark);
+    localStorage.theme = dark ? "dark" : "light";
+  }
 
   async function fetchFiles(): Promise<void> {
     loading = true;
@@ -24,45 +30,55 @@
   });
 </script>
 
-<div class="app-shell min-h-screen">
-  <div class="mx-auto flex max-w-6xl flex-col gap-8 px-4 py-8 sm:px-6 lg:px-8 lg:py-10">
-    <header class="app-card overflow-hidden rounded-[28px] border border-white/10 p-8 shadow-[0_25px_80px_rgba(2,10,58,0.45)]">
-      <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-        <div class="max-w-2xl">
-          <div class="inline-flex items-center gap-2 rounded-full border border-[#68a94a]/30 bg-[#68a94a]/12 px-3 py-1 text-sm font-medium text-[#8dd467]">
-            <span class="h-2 w-2 rounded-full bg-[#68a94a]"></span>
-            Geïnspireerd door Aaltense Schietbond
-          </div>
-          <h1 class="mt-4 text-4xl font-semibold tracking-tight text-[#e8f0f8] sm:text-5xl">
-            Excel S3 Beheer
-          </h1>
-          <p class="mt-3 text-lg leading-8 text-[#a0bcd4]">
-            Upload, bekijk en download je Excel-bestanden uit S3 met een rustige, verzorgde interface.
+<div class="min-h-screen bg-asb-cream dark:bg-asb-dark-bg">
+  <div class="mx-auto flex max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+    <header class="flex flex-col gap-5 border-b border-asb-line pb-6 sm:flex-row sm:items-center sm:justify-between dark:border-asb-dark-line">
+      <div class="flex items-center gap-4">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-asb-red text-xs font-bold tracking-wider text-white shadow-[0_8px_20px_-8px_rgba(162,26,32,0.65)]">
+          XLS
+        </div>
+        <div>
+          <h1 class="text-2xl font-semibold text-[#342b2a] dark:text-asb-dark-text">Excel S3 Beheer</h1>
+          <p class="mt-0.5 text-sm text-asb-brown/65 dark:text-asb-dark-muted">Aaltense Schietbond</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-5 self-start sm:self-auto">
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wider text-asb-brown/45 dark:text-asb-dark-muted">Bestanden</p>
+          <p class="mt-0.5 text-lg font-semibold text-asb-brown dark:text-asb-dark-text">{files.length}</p>
+        </div>
+        <div class="h-9 w-px bg-asb-line dark:bg-asb-dark-line"></div>
+        <div>
+          <p class="text-xs font-semibold uppercase tracking-wider text-asb-brown/45 dark:text-asb-dark-muted">Status</p>
+          <p class="mt-1 flex items-center gap-2 text-sm font-medium text-asb-brown dark:text-asb-dark-text">
+            <span class="h-2 w-2 rounded-full {loading ? 'bg-amber-400' : 'bg-asb-green'}"></span>
+            {loading ? "Vernieuwen…" : "Gereed"}
           </p>
         </div>
-
-        <div class="grid gap-3 sm:grid-cols-2">
-          <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
-            <p class="text-sm text-[#8fafc8]">Opgeslagen bestanden</p>
-            <p class="mt-1 text-2xl font-semibold text-[#e8f0f8]">{files.length}</p>
-          </div>
-          <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 backdrop-blur">
-            <p class="text-sm text-[#8fafc8]">Status</p>
-            <p class="mt-1 text-sm font-medium text-[#8dd467]">
-              {loading ? "Vernieuwen…" : "Klaar om te bekijken"}
-            </p>
-          </div>
-        </div>
+        <div class="h-9 w-px bg-asb-line dark:bg-asb-dark-line"></div>
+        <button
+          onclick={toggleDark}
+          class="flex h-9 w-9 items-center justify-center rounded-md border border-asb-line text-asb-brown/70 transition-colors hover:border-asb-red/35 hover:bg-asb-red/4 hover:text-asb-red dark:border-asb-dark-line dark:text-asb-dark-muted dark:hover:border-asb-red-soft/50 dark:hover:bg-asb-red-soft/10 dark:hover:text-asb-red-soft"
+          aria-label={dark ? "Lichte modus" : "Donkere modus"}
+          title={dark ? "Lichte modus" : "Donkere modus"}
+        >
+          {dark ? "☀" : "☾"}
+        </button>
       </div>
     </header>
 
-    <main class="flex flex-col gap-8">
-      <section class="app-card rounded-3xl border border-white/10 p-5 shadow-[0_20px_60px_rgba(2,10,58,0.30)] sm:p-6">
+    <main class="grid items-start gap-6 lg:grid-cols-[20rem_minmax(0,1fr)]">
+      <section aria-label="Bestand uploaden">
         <FileUpload onUploadComplete={fetchFiles} />
       </section>
-      <section class="app-card rounded-3xl border border-white/10 p-5 shadow-[0_20px_60px_rgba(2,10,58,0.30)] sm:p-6">
+      <section class="min-w-0" aria-label="Bestanden beheren">
         <FileList {files} {loading} onRefresh={fetchFiles} />
       </section>
     </main>
+
+    <footer class="pb-4 text-center text-sm text-asb-brown/50 dark:text-asb-dark-muted">
+      Gebouwd met ♥ voor de Aaltense Schietbond
+    </footer>
   </div>
 </div>

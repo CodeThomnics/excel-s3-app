@@ -54,7 +54,7 @@
 
 <div class="space-y-4">
   <div
-    class={`upload-dropzone flex min-h-90 cursor-pointer flex-col items-center justify-center rounded-[22px] p-10 text-center transition-all duration-200 sm:min-h-100 sm:p-12 ${dragOver ? "upload-dropzone--active" : ""}`}
+    class={`group flex min-h-64 cursor-pointer flex-col items-center justify-center rounded-2xl border bg-white p-6 text-center shadow-[0_12px_35px_-24px_rgba(84,70,69,0.4)] transition-all duration-200 hover:border-asb-red/35 hover:shadow-[0_16px_40px_-24px_rgba(162,26,32,0.35)] dark:bg-asb-dark-surface dark:shadow-none dark:hover:border-asb-red-soft/45 ${dragOver ? "-translate-y-0.5 border-asb-red bg-asb-red/3 ring-4 ring-asb-red/10 dark:border-asb-red-soft dark:bg-asb-red-soft/10 dark:ring-asb-red-soft/15" : "border-asb-line dark:border-asb-dark-line"}`}
     role="button"
     tabindex="0"
     aria-label="Upload an Excel file"
@@ -80,24 +80,24 @@
       hidden
     />
 
-    <div class="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/15 text-2xl text-emerald-400">
+    <div class="mx-auto flex h-11 w-11 items-center justify-center rounded-xl bg-asb-red/10 text-xl font-medium text-asb-red transition-transform duration-200 group-hover:-translate-y-0.5 dark:bg-asb-red-soft/15 dark:text-asb-red-soft">
       ⬆
     </div>
-    <h2 class="mt-5 text-xl font-semibold text-app-text">
-      Excel-bestanden uploaden
+    <h2 class="mt-4 text-lg font-semibold text-[#342b2a] dark:text-asb-dark-text">
+      Bestand uploaden
     </h2>
-    <p class="mt-2 text-sm leading-7 text-app-text-muted">
-      Sleep een spreadsheet hierheen of kies een bestand van je apparaat.
+    <p class="mt-1 max-w-60 text-sm leading-6 text-asb-brown/65 dark:text-asb-dark-muted">
+      Sleep een spreadsheet hierheen of kies er een op je apparaat.
     </p>
-    <div class="mt-5 inline-flex items-center rounded-full border border-emerald-500/35 bg-emerald-500/12 px-4 py-2 text-sm font-medium text-emerald-400">
+    <div class="mt-4 inline-flex items-center rounded-lg bg-asb-red px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors group-hover:bg-asb-red-dark dark:bg-asb-red-soft dark:text-asb-dark-bg dark:group-hover:bg-asb-red">
       {uploading ? "Uploaden…" : "Bestand kiezen"}
     </div>
-    <p class="mt-4 text-xs uppercase tracking-[0.24em] text-[#5a7a9a]">
-      Ondersteund: .xlsx .xls .csv
+    <p class="mt-3 text-xs text-asb-brown/45 dark:text-asb-dark-muted">
+      XLSX · XLS · CSV
     </p>
   </div>
   {#if error}
-    <p class="rounded-2xl border border-rose-400/30 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+    <p class="rounded-2xl border border-asb-red/30 bg-asb-red/10 px-4 py-3 text-sm text-asb-red dark:border-asb-red-soft/30 dark:bg-asb-red-soft/10 dark:text-asb-red-soft">
       {error}
     </p>
   {/if}

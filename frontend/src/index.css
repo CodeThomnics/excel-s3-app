@@ -1,26 +1,48 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
-  --color-app-900: #021e3a;
-  --color-app-800: #033664;
-  --color-app-700: #0a4a82;
+  --color-asb-red: #a21a20;
+  --color-asb-red-dark: #7f1419;
+  --color-asb-brown: #544645;
+  --color-asb-blue: #033664;
+  --color-asb-green: #4f8a3a;
+  --color-asb-cream: #faf7f5;
+  --color-asb-line: #ece7e4;
+
+  --color-asb-dark-bg: #1c1517;
+  --color-asb-dark-surface: #271e20;
+  --color-asb-dark-line: #413538;
+  --color-asb-dark-text: #efe6e5;
+  --color-asb-dark-muted: #b8a5a3;
+  --color-asb-red-soft: #d96a6f;
 }
 
 :root {
+  color-scheme: light;
+}
+
+.dark {
   color-scheme: dark;
 }
 
 @layer base {
   html, body {
-    font-family: Inter, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #1a2332;
-    color: #e8f0f8;
+    background-color: var(--color-asb-cream);
+    color: #3f3534;
     min-width: 320px;
     min-height: 100vh;
+  }
+
+  .dark body {
+    background-color: var(--color-asb-dark-bg);
+    color: var(--color-asb-dark-text);
   }
 
   *, *::before, *::after {
@@ -30,8 +52,4 @@
   button, input, select, textarea {
     font: inherit;
   }
-}
-
-@layer utilities {
-  .app-text-muted { color: #8fafc8; }
 }
